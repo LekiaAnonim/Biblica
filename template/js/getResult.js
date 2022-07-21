@@ -1,15 +1,35 @@
 
 const bibleVersionID = getParameterByName(`version`) || `06125adad2d5898a-01`;
 
-const btn = document.querySelector('.btn')
+const btn = document.querySelector('.btn');
+const resultList = document.querySelector('.display-passage');
 
 let selObj = document.getSelection();
 
 btn.addEventListener('click', function() {
-    let passage = selObj.toString();
-    console.log(passage);
-    getResults(passage);
+    let searchText = selObj.toString();
+    console.log(searchText);
+    getResults(searchText, offset=0).then((data) => {
+      resultHTML = ``;
+      if (data.passages) {
+        if (!data.passages[0]) {
+          resultHTML = `<div class="data-not-found">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
+        }
+        else {
+          resultHTML += `<ul>`;
+          for (const passage of data.passages) {
+            resultHTML += `<li>
+              <h5>${passage.reference}</h5>
+              <div>${passage.content}</div>
+            </li>`;
+            resultHTML += `</ul>`;
+          }
+        }
+      }
+      resultList.innerHTML = resultHTML;
+    })
 })
+
 
 
 function getResults(searchText, offset = 0) {
@@ -21,7 +41,7 @@ function getResults(searchText, offset = 0) {
           const { data, meta } = JSON.parse(this.responseText);
           _BAPI.t(meta.fumsId);
           resolve(data);
-          console.log(data);
+          console.log(data.passages[0].content);
         }
       });
       xhr.open(
