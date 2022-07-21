@@ -1,5 +1,7 @@
 getBibleVersions('English');
-getLanguages()
+getLanguages().then((language) => {
+  console.log(language.name);
+})
 function getLanguages(){
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -13,10 +15,7 @@ function getLanguages(){
             })
             
             resolve(language)
-            // console.log(language)
-          //   for (const version of versions) {
-          //     console.log(version.name);
-          //   }
+            
           }
         });
         xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
@@ -49,10 +48,6 @@ function getBibleVersions(language) {
           });
           
           resolve(versions);
-        //   console.log(versions)
-        //   for (const version of versions) {
-        //     console.log(version.name);
-        //   }
         }
       });
       xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);

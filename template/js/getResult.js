@@ -16,11 +16,28 @@ btn.addEventListener('click', function() {
           resultHTML = `<div class="data-not-found">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
         }
         else {
+          
           resultHTML += `<ul>`;
           for (const passage of data.passages) {
             resultHTML += `<li>
               <h5>${passage.reference}</h5>
               <div>${passage.content}</div>
+            </li>`;
+            resultHTML += `</ul>`;
+          }
+        }
+      }
+      if (data.verses) {
+        if (!data.verses[0]) {
+          resultHTML = `<div class="data-not-found">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
+        }
+        else {
+          
+          resultHTML += `<ul>`;
+          for (const verse of data.verses) {
+            resultHTML += `<li>
+              <h5>${verse.reference}</h5>
+              <div>${verse.text}</div>
             </li>`;
             resultHTML += `</ul>`;
           }
@@ -41,7 +58,6 @@ function getResults(searchText, offset = 0) {
           const { data, meta } = JSON.parse(this.responseText);
           _BAPI.t(meta.fumsId);
           resolve(data);
-          console.log(data.passages[0].content);
         }
       });
       xhr.open(
