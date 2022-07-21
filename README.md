@@ -1,8 +1,11 @@
 
 
 📙#BIBLICA
+
 📓##Description: 
 Biblica is a bible browser extension. Users can get the quote of a bible passage by selecting the bible passage. Biblica comes in different languages and bible versions.
+
+
 
 📗##Structure:
 bible.api : This is a free Bible API service that serve as the source for the biblica application.
