@@ -1,7 +1,9 @@
 getBibleVersions('English');
+
 getLanguages().then((language) => {
   console.log(language.name);
 })
+
 function getLanguages(){
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -55,7 +57,8 @@ function getBibleVersions(language) {
       xhr.onerror = () => reject(xhr.statusText);
       xhr.send();
     });
-  }
+}
+
 
 
 function sortVersionsByLanguage(bibleVersionList) {
