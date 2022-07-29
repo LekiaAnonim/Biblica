@@ -15,6 +15,14 @@
     font-style: italic;
 }
 
+.cancel {
+    background-color: rgb(68, 66, 66);
+}
+
+.cancel:hover {
+    background-color: rgb(252, 97, 35);
+}
+
 button {
     cursor: pointer;
 }
