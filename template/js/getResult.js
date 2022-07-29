@@ -4,16 +4,34 @@ const btn = document.querySelector('.btn');
 const resultDiv = document.createElement('div');
 const resultList = document.querySelector('.display-passage');
 let selObj = document.getSelection();
+let offset = 0;
 
+function nextpage() {
+    offset += 1;
+    console.log(offset);
+    searchText = document.querySelector('.searchtext').innerText;
+    renderResult();
+}
+
+function previouspage() {
+    if (offset >= 0) {
+        offset -= 1;
+        console.log(offset);
+        let searchText = document.querySelector('.searchtext').innerText;
+        renderResult();
+
+    }
+}
 
 
 function renderResult(e) {
     try {
+
         e.preventDefault();
         resultList.style.display = 'block';
         let searchText = selObj.toString();
         console.log(searchText);
-        getResults(searchText, offset = 10).then((data) => {
+        getResults(searchText, offset).then((data) => {
             resultHTML = ``;
             if (data.passages) {
                 if (!data.passages[0]) {
@@ -50,10 +68,15 @@ function renderResult(e) {
                     console.log(data.verses);
                     resultHTML += `<div style="width: 400px; height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #F0F8FF;">`;
                     resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0;">
-                              <div style="width: 380px; margin-top:20px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
+                              <div class="searchtext" style="width: 380px; margin-top:20px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
                               <div class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; background-color: red; border-radius:50%; font-size:8px;">✖</div>
+                              <div style="display: flex;">
+                                <button class="previous pagenav" style="border:none; background-color:none; font-size:x-small;"><< Previous</button>
+                                <p style="background-color:rgb(147, 201, 252);font-size:x-small;">${offset+1}</p>
+                                <button class="next pagenav" style="border:none; background-color:none;font-size:x-small;">Next >></button>
+                              </div>
                           </div>`;
-                    resultHTML += `<div style="margin-top: 50px;">`;
+                    resultHTML += `<div style="margin-top: 70px;">`;
                     for (const verse of data.verses) {
                         // console.log(verse);
                         resultHTML += `<div style="padding: 0 5px;">
@@ -62,6 +85,7 @@ function renderResult(e) {
                             </div>
                             `;
                     }
+                    // resultHTML += ``;
                     resultHTML += `</div>`;
                     resultHTML += `</div>`;
                 }
@@ -70,12 +94,12 @@ function renderResult(e) {
             }
 
             resultList.innerHTML = resultHTML;
+            document.querySelector('.previous').addEventListener('click', previouspage, true);
+            document.querySelector('.next').addEventListener('click', nextpage, true);
             const cancel = document.querySelector('.cancel');
             cancel.addEventListener('click', removeresultList);
             moveDiv(resultList);
 
-
-            // cancel.removeEventListener('click', removeresultList);
         })
     } catch (err) {
         console.log(err.message);
@@ -89,10 +113,7 @@ function removeresultList() {
     resultList.style.display = 'none';
 }
 
-
-
-
-function getResults(searchText, offset = 10) {
+function getResults(searchText, offset) {
     try {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -115,7 +136,6 @@ function getResults(searchText, offset = 10) {
     } catch (err) {
         console.log(err.message);
     }
-
 }
 
 function getParameterByName(name) {
@@ -129,7 +149,6 @@ function getParameterByName(name) {
 }
 
 function moveDiv(div) {
-
     try {
         var mousePosition;
         var offset = [0, 0];

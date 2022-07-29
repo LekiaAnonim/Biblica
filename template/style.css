@@ -14,3 +14,11 @@
 .q1 {
     font-style: italic;
 }
+
+button {
+    cursor: pointer;
+}
+
+.pagenav:hover {
+    text-decoration: underline;
+}
