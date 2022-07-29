@@ -24,8 +24,14 @@ function previouspage() {
 }
 
 function copyResult() {
-    textToCopy = document.querySelector('.resultbody').innerText;
-    navigator.clipboard.writeText(textToCopy);
+    textToCopy = document.querySelectorAll('.resultbody');
+    allText = [];
+    Array.from(textToCopy).forEach(function(text) {
+
+        allText.push(text.innerText);
+        navigator.clipboard.writeText(allText);
+    })
+
 
     var tooltip = document.getElementById("myTooltip");
     tooltip.innerHTML = "Copied";
@@ -110,7 +116,7 @@ function renderResult(e) {
                                 </div>
                               </div>
                           </div>`;
-                    resultHTML += `<div style="margin-top: 70px;">`;
+                    resultHTML += `<div style="margin-top: 80px;">`;
                     for (const verse of data.verses) {
                         // console.log(verse);
                         resultHTML += `<div class="resultbody" style="padding: 0 5px;">
