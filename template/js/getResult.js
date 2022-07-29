@@ -8,29 +8,41 @@ let offset = 0;
 
 function nextpage() {
     offset += 1;
-    console.log(offset);
-    searchText = document.querySelector('.searchtext').innerText;
+    // console.log(offset);
+    // searchText = document.querySelector('.searchtext').innerText;
     renderResult();
 }
 
 function previouspage() {
     if (offset >= 0) {
         offset -= 1;
-        console.log(offset);
-        let searchText = document.querySelector('.searchtext').innerText;
+        // console.log(offset);
+        // let searchText = document.querySelector('.searchtext').innerText;
         renderResult();
 
     }
 }
 
+function copyResult() {
+    textToCopy = document.querySelector('.resultbody').innerText;
+    navigator.clipboard.writeText(textToCopy);
+
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copied";
+}
+
+function outFunc() {
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copy to clipboard";
+}
 
 function renderResult(e) {
     try {
 
         e.preventDefault();
         resultList.style.display = 'block';
-        let searchText = selObj.toString();
-        console.log(searchText);
+        let searchText = selObj.toString() || document.querySelector('.searchtext').innerText;
+        // console.log(searchText);
         getResults(searchText, offset).then((data) => {
             resultHTML = ``;
             if (data.passages) {
@@ -40,16 +52,30 @@ function renderResult(e) {
 
 
                     // resultHTML += `<div style="width: 400px; padding: 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #F0F8FF;">`;
-                    resultHTML += `<div style="width: 400px; height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #F0F8FF;">`;
-                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0;">
-                              <div style="width: 380px; margin-top:20px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
-                              <div class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; background-color: red; border-radius:50%; font-size:8px;">✖</div>
-                          </div>`;
-                    resultHTML += `<div style="margin-top: 50px;">`;
+                    resultHTML += `<div style="width: 400px; max-height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #c8d9e7;">`;
+                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0; padding-top:5px;">
+                                        <div style="width: 380px; margin-top:20px; padding-left:5px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
+                                        <div class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; background-color: red; border-radius:50%; font-size:8px;">✖</div>
+                                        <div style="display:flex; align-items:center; justify-content: space-between;">
+                                          <div class="navigatepage" style="">
+                                            <button class="previous pagenav" style="display: none; border:none; background-color:none; font-size:x-small;"><< Previous</button>
+                                            <p style="display: none; background-color:rgb(147, 201, 252);font-size:x-small;">${offset+1} of ${data.total}</p>
+                                            <button class="next pagenav" style="display: none; border:none; background-color:none;font-size:x-small;">Next >></button>
+                                          </div>
+                                          <div class="tooltip">
+                                            <button class="copybtn" style="border:none; background-color:none; font-size:x-small;" onclick="copyResult()" onmouseout="outFunc()">
+                                            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                                            <i style="font-size:15px; margin-top:5px;" class="fa">&#xf24d;</i>
+                                            </button>
+                                          </div>
+                                        </div>
+                        
+                                    </div>`;
+                    resultHTML += `<div style="margin-top: 60px;">`;
                     for (const passage of data.passages) {
                         // console.log(passage.content);
 
-                        resultHTML += ` <div>
+                        resultHTML += ` <div class="resultbody">
                                             <h5 style="font-size: 30px; font-weight:700; padding: 0; margin: 0;">${passage.reference}</h5>
                                             <div>${passage.content}</div>
                                         </div>
@@ -65,21 +91,29 @@ function renderResult(e) {
 
                     resultHTML = `<div class="data-not-found">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
                 } else {
-                    console.log(data.verses);
-                    resultHTML += `<div style="width: 400px; height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #F0F8FF;">`;
-                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0;">
-                              <div class="searchtext" style="width: 380px; margin-top:20px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
+                    // console.log(data.verses);
+                    resultHTML += `<div style="width: 400px; height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #c8d9e7;">`;
+                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0; padding-top:5px;">
+                              <div class="searchtext" style="width: 380px; margin-top:20px; padding-left:5px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
                               <div class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; background-color: red; border-radius:50%; font-size:8px;">✖</div>
-                              <div style="display: flex;">
-                                <button class="previous pagenav" style="border:none; background-color:none; font-size:x-small;"><< Previous</button>
-                                <p style="background-color:rgb(147, 201, 252);font-size:x-small;">${offset+1}</p>
-                                <button class="next pagenav" style="border:none; background-color:none;font-size:x-small;">Next >></button>
+                              <div style="display:flex; align-items:center; justify-content: space-between;">
+                                <div class="navigatepage" style="display: flex;">
+                                  <button class="previous pagenav" style="border:none; background-color:none; font-size:x-small;"><< Previous</button>
+                                  <p style="background-color:rgb(147, 201, 252);font-size:x-small;">${offset+1} of ${data.total}</p>
+                                  <button class="next pagenav" style="border:none; background-color:none;font-size:x-small;">Next >></button>
+                                </div>
+                                <div class="tooltip" style="">
+                                  <button class="copybtn" style="border:none; background-color:none; font-size:x-small;" onclick="copyResult()" onmouseout="outFunc()">
+                                  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                                  <i style="font-size:15px;" class="fa">&#xf24d;</i>
+                                  </button>
+                                </div>
                               </div>
                           </div>`;
                     resultHTML += `<div style="margin-top: 70px;">`;
                     for (const verse of data.verses) {
                         // console.log(verse);
-                        resultHTML += `<div style="padding: 0 5px;">
+                        resultHTML += `<div class="resultbody" style="padding: 0 5px;">
                               <h5 style="padding: 0; margin:0;">${verse.reference}</h5>
                               <p style="font-size: small; padding: 0; margin: 0;">${verse.text}</p>
                             </div>
@@ -94,8 +128,8 @@ function renderResult(e) {
             }
 
             resultList.innerHTML = resultHTML;
-            document.querySelector('.previous').addEventListener('click', previouspage, true);
-            document.querySelector('.next').addEventListener('click', nextpage, true);
+            document.querySelector('.previous').addEventListener('click', previouspage, false);
+            document.querySelector('.next').addEventListener('click', nextpage, false);
             const cancel = document.querySelector('.cancel');
             cancel.addEventListener('click', removeresultList);
             moveDiv(resultList);
