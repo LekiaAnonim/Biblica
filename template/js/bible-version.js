@@ -1,9 +1,3 @@
-getBibleVersions('English');
-
-getLanguages().then((language) => {
-    console.log(language.name);
-})
-
 function getLanguages() {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -27,7 +21,7 @@ function getLanguages() {
     });
 }
 
-function getBibleVersions(language) {
+function getBibleVersions() {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
@@ -36,15 +30,15 @@ function getBibleVersions(language) {
                 const { data } = JSON.parse(this.responseText);
 
                 const versions = data.map((data) => {
-                    if (data.language.name == language) {
-                        return {
-                            name: data.name,
-                            id: data.id,
-                            abbreviation: data.abbreviation,
-                            description: data.description,
-                            language: data.language.name,
-                        };
-                    } else return null
+                    // if (data.language.name == language) {
+                    return {
+                        name: data.name,
+                        id: data.id,
+                        abbreviation: data.abbreviation,
+                        description: data.description,
+                        language: data.language.name,
+                    };
+                    // } else return null
 
                 });
 

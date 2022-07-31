@@ -1,10 +1,12 @@
-const bibleVersionID = getParameterByName(`version`) || `06125adad2d5898a-01`;
+// const bibleVersionID = document.querySelector('#languages').value || `06125adad2d5898a-01`;
 
 const btn = document.querySelector('.btn');
 const resultDiv = document.createElement('div');
 const resultList = document.querySelector('.display-passage');
 let selObj = document.getSelection();
 let offset = 0;
+
+document.body.addEventListener('mouseup', renderResult, true);
 
 function nextpage() {
     offset += 1;
@@ -42,14 +44,28 @@ function outFunc() {
     tooltip.innerHTML = "Copy to clipboard";
 }
 
+
 function renderResult(e) {
     try {
 
         e.preventDefault();
         resultList.style.display = 'block';
-        let searchText = selObj.toString() || document.querySelector('.searchtext').innerText;
+        const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+        const bibleVersionID = sessionStorage.LocalToGlobalVID || `bba9f40183526463-01`;
         // console.log(searchText);
-        getResults(searchText, offset).then((data) => {
+        getBibleVersions().then((versions) => {
+
+            // e.preventDefault();
+            try {
+
+                versionss = versions.slice(1);
+            } catch (err) {
+                location.reload(false);
+                console.log(err.message);
+            }
+        });
+        getResults(searchText, offset, bibleVersionID).then((data) => {
+
             resultHTML = ``;
             if (data.passages) {
                 if (!data.passages[0]) {
@@ -57,16 +73,32 @@ function renderResult(e) {
                 } else {
 
 
-                    // resultHTML += `<div style="width: 400px; padding: 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #F0F8FF;">`;
                     resultHTML += `<div style="width: 400px; max-height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #c8d9e7;">`;
-                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0; padding-top:5px;">
-                                        <div style="width: 380px; margin-top:20px; padding-left:5px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
-                                        <div class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; border-radius:50%; font-size:8px;">✖</div>
+                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0; padding-top:5px;">`
+                    resultHTML += `<div style="padding:10px;">`
+                    resultHTML += `<select id="languages" style="border:none; width:300px; font-size:x-small; position:absolute;">`;
+                    resultHTML += `<option value='06125adad2d5898a-01'>King James (Authorized) Version</option>`;
+
+                    try {
+                        for (const version of versionss) {
+
+                            resultHTML += `<option value=${version.id}>${version.name}</option>`;
+
+                        }
+                    } catch (err) {
+                        console.log(err.message)
+                    }
+
+                    resultHTML += `</select>`;
+                    resultHTML += `</div>`;
+                    resultHTML += `<div>
+                                        <div class="searchtext" style="width: 380px; margin-top:20px; padding-left:5px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
+                                        <div class="cancel" title="Close" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; border-radius:50%; font-size:8px;">✖</div>
                                         <div style="display:flex; align-items:center; justify-content: space-between;">
                                           <div class="navigatepage" style="">
-                                            <button class="previous pagenav" style="display: none; border:none; background-color:#fff; font-size:x-small;"><< Previous</button>
+                                            <button title="Go to the previous page" class="previous pagenav" style="display: none; border:none; background-color:#fff; font-size:x-small;"><< Previous</button>
                                             <p style="display: none; background-color:rgb(147, 201, 252);font-size:x-small;">${offset+1} of ${data.total}</p>
-                                            <button class="next pagenav" style="display: none; border:none; background-color:#fff;font-size:x-small;">Next >></button>
+                                            <button title="Go to the next page" class="next pagenav" style="display: none; border:none; background-color:#fff;font-size:x-small;">Next >></button>
                                           </div>
                                           <div class="tooltip">
                                             <button class="copybtn" style="border:none; background-color:#fff; font-size:x-small;" onclick="copyResult()" onmouseout="outFunc()">
@@ -75,9 +107,10 @@ function renderResult(e) {
                                             </button>
                                           </div>
                                         </div>
-                        
                                     </div>`;
-                    resultHTML += `<div style="margin-top: 60px;">`;
+                    resultHTML += `</div>`;
+
+                    resultHTML += `<div style="margin-top: 80px;">`;
                     for (const passage of data.passages) {
                         // console.log(passage.content);
 
@@ -90,6 +123,7 @@ function renderResult(e) {
                     }
                     resultHTML += `</div>`;
                     resultHTML += `</div>`;
+
                 }
             }
             if (data.verses) {
@@ -97,11 +131,27 @@ function renderResult(e) {
 
                     resultHTML = `<div class="data-not-found">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
                 } else {
-                    // console.log(data.verses);
-                    resultHTML += `<div style="width: 400px; height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #c8d9e7;">`;
-                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0; padding-top:5px;">
+                    resultHTML += `<div style="width: 400px; max-height:400px; overflow-y: scroll; padding: 0 10px; position:absolute; display:block; background-color:#fff; border: 1px solid #c8d9e7;">`;
+                    resultHTML += `<div class="resulthead" style="position: fixed; background-color:#fff; margin-top: 0; padding-top:5px;">`
+                    resultHTML += `<div style="padding:10px;">`
+                    resultHTML += `<select id="languages" style="border:none; width:300px; font-size:x-small; position:absolute;">`;
+                    resultHTML += `<option value='06125adad2d5898a-01'>King James (Autorized) Version</option>`;
+
+                    try {
+                        for (const version of versionss) {
+
+                            resultHTML += `<option value=${version.id}>${version.name}</option>`;
+
+                        }
+                    } catch (err) {
+                        console.log(err.message)
+                    }
+
+                    resultHTML += `</select>`;
+                    resultHTML += `</div>`;
+                    resultHTML += `<div>
                               <div class="searchtext" style="width: 380px; margin-top:20px; padding-left:5px; background-color:#7CB9E8; color:#fff;">${searchText}</div>
-                              <div class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; border-radius:50%; font-size:8px;">✖</div>
+                              <div title="Close" class="cancel" style="cursor:pointer; display:flex; align-items:center; justify-content:center; text-justify:center; width:15px; height:15px; position:absolute; top:0; right:0; color:#fff; border-radius:50%; font-size:8px;">✖</div>
                               <div style="display:flex; align-items:center; justify-content: space-between;">
                                 <div class="navigatepage" style="display: flex;">
                                   <button class="previous pagenav" style="border:none; background-color:none; font-size:x-small;"><< Previous</button>
@@ -116,7 +166,8 @@ function renderResult(e) {
                                 </div>
                               </div>
                           </div>`;
-                    resultHTML += `<div style="margin-top: 80px;">`;
+                    resultHTML += `</div>`;
+                    resultHTML += `<div style="margin-top: 100px;">`;
                     for (const verse of data.verses) {
                         // console.log(verse);
                         resultHTML += `<div class="resultbody" style="padding: 0 5px;">
@@ -125,9 +176,9 @@ function renderResult(e) {
                             </div>
                             `;
                     }
-                    // resultHTML += ``;
                     resultHTML += `</div>`;
                     resultHTML += `</div>`;
+
                 }
 
 
@@ -137,23 +188,27 @@ function renderResult(e) {
             document.querySelector('.previous').addEventListener('click', previouspage, false);
             document.querySelector('.next').addEventListener('click', nextpage, false);
             const cancel = document.querySelector('.cancel');
-            cancel.addEventListener('click', removeresultList);
+            cancel.addEventListener('click', removeresultList, true);
             moveDiv(resultList);
 
+            let searchT = document.querySelector('.searchtext').innerText
+            sessionStorage.LocalToGlobalVar = searchT;
+            languageOption = document.querySelector('#languages');
+            VersionLanguage = languageOption.value;
+            sessionStorage.LocalToGlobalVID = VersionLanguage;
         })
     } catch (err) {
         console.log(err.message);
     }
-
-
 }
-document.body.addEventListener('mouseup', renderResult, true);
+
+
 
 function removeresultList() {
     resultList.style.display = 'none';
 }
 
-function getResults(searchText, offset) {
+function getResults(searchText, offset, bibleVersionID) {
     try {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -196,9 +251,12 @@ function moveDiv(div) {
         var isDown = false;
         // div.style.resize = "both";
         // div.style.overflow = "auto";
-        div.style.position = "fixed";
-        div.style.left = div.clientX;
-        div.style.top = div.clientY;
+        x = div.x - this.offsetLeft;
+        y = div.y - this.offsetTop;
+        y += 10;
+        div.style.position = "absolute";
+        div.style.left = `${x}px`;
+        div.style.top = `${y}px`;
 
         // div.style.overflow = "auto";
         div.addEventListener('mousedown', function(e) {
