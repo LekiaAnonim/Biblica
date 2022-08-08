@@ -1,14 +1,18 @@
 .p,
 .q1,
 .m {
-    color: rgb(3, 3, 27);
+    color: rgb(48, 48, 51);
     font-size: small;
 }
+/* body{
+    background-color: black;
+} */
 
 .v {
     margin-right: 5px;
     font-weight: 900;
-    color: rgb(26, 135, 238);
+    /* color: rgb(26, 135, 238); */
+    color: #4D4DFF;
 }
 
 .q1 {
@@ -16,11 +20,11 @@
 }
 
 .cancel {
-    background-color: rgb(68, 66, 66);
+    background-color: #4D4DFF;
 }
 
 .cancel:hover {
-    background-color: rgb(252, 97, 35);
+    background-color: rgb(68, 66, 66);
 }
 
 button {
@@ -29,6 +33,7 @@ button {
 
 .pagenav:hover {
     text-decoration: underline;
+    color: rgb(221, 8, 193);;
 }
 
 .copybtn:hover {
@@ -43,7 +48,8 @@ button {
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 140px;
-    background-color: #555;
+    background: rgb(90, 90, 90);
+    /* background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(248, 0, 255, 1) 100%); */
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -65,10 +71,81 @@ button {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #555 transparent transparent transparent;
+    border-color: rgb(90, 90, 90) transparent transparent transparent;
 }
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+
+.cont{
+    /* background-image: url('WallpaperDog-20393704.png'); */
+    background-size: cover;
+    box-shadow: 3px 3px 7px 2px #4D4DFF;
+    border-radius: 10px;
+    /* color: rgb(255, 255, 255); */
+    /* -webkit-filter: hue-rotate(76deg); */
+    /* filter: hue-rotate(76deg); */
+    /* -webkit-transition: .2s ease-in-out; */
+    /* transition: .2s ease-in-out; */
+    /* text-align: center; */
+    text-decoration: none;
+    animation-name: beep_shadow;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: reverse;
+    transition: box-shadow 3s linear 3s;
+}
+@keyframes beep_shadow {
+    0% {
+        box-shadow: 0.3px 0.3px 0.6px 0px #4D4DFF;
+    }
+
+    25%{box-shadow: 0.5px 0.5px 1px 0px #4D4DFF;}
+
+    50% {
+        box-shadow: 1px 1px 2px 0px #4D4DFF;
+    }
+
+    75% {
+        box-shadow: 1.5px 1.5px 3.5px 0px #4D4DFF;
+    }
+
+    100% {
+        box-shadow: 2px 2px 5px 0px #4D4DFF;
+    }
+}
+.resulthead{
+    border-radius: 0 0 8px 8px;
+    /* background-color: #918383; */
+}
+.searchtext{
+    /* background-color: #7CB9E8; */
+    background:#4D4DFF;
+    /* background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(248, 0, 255, 1) 100%); */
+    border-radius: 8px;
+}
+.pagenav{
+    background-color: white;
+}
+.copybtn{
+    background-color: white;
+}
+.fa{
+    color: #4D4DFF;
+}
+.fa:hover{
+    
+    background-color: #4D4DFF;
+}
+.pagenum{
+    /* background-color: rgb(147, 201, 252); */
+    background: #4D4DFF;
+    /* background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 100%, rgba(248, 0, 255, 1) 100%); */
+    color: #fff;
+}
+h5{
+    color: #4D4DFF;
 }
