@@ -8,23 +8,18 @@ let offset = 0;
 
 
 
-document.body.addEventListener('mouseup', function () {
-  const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
-  console.log(searchText);
-  const bibleVersionID =  `bba9f40183526463-01` || sessionStorage.LocalToGlobalVID;
-  getResults(searchText, offset, bibleVersionID);
-});
+document.body.addEventListener('mouseup', renderResult, true);
 
 
-function nextpage(data) {
+function nextpage() {
     offset += 1;
-    renderResult(data);
+    renderResult();
 }
 
-function previouspage(data) {
+function previouspage() {
     if (offset >= 0) {
         offset -= 1;
-        renderResult(data);
+        renderResult();
     }
 }
 
@@ -44,8 +39,14 @@ function outFunc() {
     tooltip.innerHTML = "Copy to clipboard";
 }
 
-function renderResult(data) {
+function renderResult() {
   // try {
+      // const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+    const bibleVersionID = `bba9f40183526463-01` || sessionStorage.LocalToGlobalVID;
+    const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+    getResults(searchText, offset, bibleVersionID);
+    
+      
       getBibleVersions().then((versions) => {
 
           // e.preventDefault();
@@ -59,6 +60,7 @@ function renderResult(data) {
       });
       resultList.style.display = 'block';
         // getResults(searchText, offset, bibleVersionID).then((data) => {
+      console.log(data.passages)
 
       resultHTML = ``;
       if (data.passages) {
@@ -74,7 +76,7 @@ function renderResult(data) {
               resultHTML += `<option value='06125adad2d5898a-01'>King James (Authorized) Version</option>`;
 
               try {
-                  for (const version of versionss) {
+                for (const version of versionss) {
 
                       resultHTML += `<option value=${version.id}>${version.name}</option>`;
 
@@ -106,7 +108,7 @@ function renderResult(data) {
 
               resultHTML += `<div style="margin-top: 80px;">`;
               for (const passage of data.passages) {
-                  // console.log(passage.content);
+                  console.log(passage.content);
 
                   resultHTML += ` <div class="resultbody">
                                       <h5 style="font-size: 30px; font-weight:700; padding: 0; margin: 0;">${passage.reference}</h5>
@@ -163,7 +165,7 @@ function renderResult(data) {
               resultHTML += `</div>`;
               resultHTML += `<div style="margin-top: 100px;">`;
               for (const verse of data.verses) {
-                  // console.log(verse);
+                  console.log(verse);
                   resultHTML += `<div class="resultbody" style="padding: 0 5px;">
                         <h5 style="padding: 0; margin:0;">${verse.reference}</h5>
                         <p style="font-size: small; padding: 0; margin: 0;">${verse.text}</p>
@@ -172,27 +174,28 @@ function renderResult(data) {
               }
               resultHTML += `</div>`;
               resultHTML += `</div>`;
-
           }
-
-
       }
 
       resultList.innerHTML = resultHTML;
-      // document.querySelector('.previous').addEventListener('click', function () {
-      //   previouspage(data)
-      // }, false);
-      // document.querySelector('.next').addEventListener('click', function () {
-      //   nextpage(data)
-      // }, false);
-      // const cancel = document.querySelector('.cancel');
-      // cancel.addEventListener('click', removeresultList, true);
-      // moveDiv(resultList);
-      // let searchT = document.querySelector('.searchtext').innerText
-      // sessionStorage.LocalToGlobalVar = searchT;
-      // languageOption = document.querySelector('#languages');
-      // VersionLanguage = languageOption.value;
-      // sessionStorage.LocalToGlobalVID = VersionLanguage;
+      document.querySelector('.previous').addEventListener('click', function () {
+        previouspage(data)
+      }, false);
+  
+      document.querySelector('.next').addEventListener('click', function () {
+        nextpage(data)
+      }, false);
+  
+      const cancel = document.querySelector('.cancel');
+      cancel.addEventListener('click', removeresultList, true);
+  
+      moveDiv(resultList);
+  
+      let searchT = document.querySelector('.searchtext').innerText
+      sessionStorage.LocalToGlobalVar = searchT;
+      languageOption = document.querySelector('#languages');
+      VersionLanguage = languageOption.value;
+      sessionStorage.LocalToGlobalVID = VersionLanguage;
         // })
     // }
     // catch (err) {
@@ -208,42 +211,23 @@ function removeresultList() {
 
 
 function getResults(searchText, offset, bibleVersionID) {
-    //     return new Promise((resolve, reject) => {
-    //         const xhr = new XMLHttpRequest();
-    //         xhr.withCredentials = false;
-    //         xhr.addEventListener(`readystatechange`, function() {
-    //             if (this.readyState === this.DONE) {
-    //                 const { data, meta } = JSON.parse(this.responseText);
-    //                 // _BAPI.t(meta.fumsId);
-    //                 resolve(data);
-    //             }
-    //         });
-    //         xhr.open(
-    //             `GET`,
-    //             `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`
-    //         );
-    //         xhr.setRequestHeader(`api-key`, API_KEY);
-    //         xhr.onerror = () => reject(xhr.statusText);
-    //         xhr.send();
-    //     });
-      // 
   fetch(`https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`,
     {
       headers: {
         "api-key": API_KEY
       },
       credentials: 'same-origin'
-      // mode: 'no-cors'
-      // ,
-      // body:JSON.stringify(callData)
     }
   ).then(response => response.json())
-  // .then(data => console.log(data));
-  .then(data => renderResult(data))
-
+    .then(data => {
+        // console.log(data.data);
+        returnData(data.data)
+    })
 } 
 
-
+function returnData(data) {
+    return data 
+}
 
 function getParameterByName(name) {
     const url = window.location.href;
