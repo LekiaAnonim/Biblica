@@ -6,9 +6,14 @@ const resultList = document.querySelector('.display-passage');
 let selObj = document.getSelection();
 let offset = 0;
 
+const elememtSel = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, a');
+Array.from(elememtSel).forEach(function (elem) {
+    if (elem) {
+    elem.addEventListener("mouseup", renderResult, true);
+}
+})
 
-
-document.body.addEventListener('mouseup', renderResult, true);
+// document.body.addEventListener("mouseup", renderResult, true);
 
 
 function nextpage() {
@@ -38,27 +43,9 @@ function outFunc() {
     var tooltip = document.getElementById("myTooltip");
     tooltip.innerHTML = "Copy to clipboard";
 }
-
-function renderResult() {
-  // try {
-      // const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
-    const bibleVersionID = `bba9f40183526463-01` || sessionStorage.LocalToGlobalVID;
-    const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
-    getResults(searchText, offset, bibleVersionID);
-    
-      
-      getBibleVersions().then((versions) => {
-
-          // e.preventDefault();
-          try {
-
-              versionss = versions.slice(1);
-          } catch (err) {
-              location.reload(false);
-              console.log(err.message);
-          }
-      });
-      resultList.style.display = 'block';
+function renderHTML(data, versionss, searchText) {
+    // const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+    resultList.style.display = 'block';
         // getResults(searchText, offset, bibleVersionID).then((data) => {
       console.log(data.passages)
 
@@ -177,53 +164,69 @@ function renderResult() {
           }
       }
 
-      resultList.innerHTML = resultHTML;
-      document.querySelector('.previous').addEventListener('click', function () {
+    resultList.innerHTML = resultHTML;
+    document.querySelector('.previous').addEventListener('click', function () {
         previouspage(data)
-      }, false);
+    }, false);
   
-      document.querySelector('.next').addEventListener('click', function () {
+    document.querySelector('.next').addEventListener('click', function () {
         nextpage(data)
-      }, false);
+    }, false);
   
-      const cancel = document.querySelector('.cancel');
-      cancel.addEventListener('click', removeresultList, true);
+    
+    const cancel = document.querySelector('.cancel');
+    cancel.addEventListener('click', removeresultList, true);
   
-      moveDiv(resultList);
+    moveDiv(resultList);
   
-      let searchT = document.querySelector('.searchtext').innerText
-      sessionStorage.LocalToGlobalVar = searchT;
-      languageOption = document.querySelector('#languages');
-      VersionLanguage = languageOption.value;
-      sessionStorage.LocalToGlobalVID = VersionLanguage;
-        // })
-    // }
-    // catch (err) {
-    //     console.log(err.message);
-    // }
-
-
+    let searchT = document.querySelector('.searchtext').innerText
+    sessionStorage.LocalToGlobalVar = searchT;
+    languageOption = document.querySelector('#languages');
+    VersionLanguage = languageOption.value;
+    sessionStorage.LocalToGlobalVID = VersionLanguage;
 }
+function renderResult() {
+  // try {
+    const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+    const bibleVersionID = `bba9f40183526463-01` || sessionStorage.LocalToGlobalVID;
+      
+    getBibleVersions().then((versions) => {
+        versionss = versions.slice(1);
+        return fetch(`https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`,
+            {
+            headers: {
+                "api-key": API_KEY
+            },
+            credentials: 'same-origin'
+            }
+        )
+    }).then(response => response.json())
+    .then(data => {
+        renderHTML(data.data, versionss, searchText)
+    })
+    
+}
+
 
 function removeresultList() {
     resultList.style.display = 'none';
 }
 
 
-function getResults(searchText, offset, bibleVersionID) {
-  fetch(`https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`,
-    {
-      headers: {
-        "api-key": API_KEY
-      },
-      credentials: 'same-origin'
-    }
-  ).then(response => response.json())
-    .then(data => {
-        // console.log(data.data);
-        returnData(data.data)
-    })
-} 
+// function getResults(searchText, offset, bibleVersionID) {
+//   fetch(`https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`,
+//     {
+//       headers: {
+//         "api-key": API_KEY
+//       },
+//       credentials: 'same-origin'
+//     }
+//   ).then(response => response.json())
+//     .then(data => {
+//         // console.log(data.data);
+//         returnData(data.data)
+//     })
+// } 
 
 function returnData(data) {
     return data 
