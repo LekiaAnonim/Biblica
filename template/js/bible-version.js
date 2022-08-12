@@ -28,9 +28,8 @@ function getBibleVersions() {
         xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
                 const { data } = JSON.parse(this.responseText);
-
+                console.log(data);
                 const versions = data.map((data) => {
-                    // if (data.language.name == language) {
                     return {
                         name: data.name,
                         id: data.id,
@@ -38,8 +37,6 @@ function getBibleVersions() {
                         description: data.description,
                         language: data.language.name,
                     };
-                    // } else return null
-
                 });
 
                 resolve(versions);
@@ -52,6 +49,31 @@ function getBibleVersions() {
     });
 }
 
+// function getBibleVersions() {
+//     fetch(`https://api.scripture.api.bible/v1/bibles`,
+//         {
+//             headers: {
+//                 "api-key": API_KEY
+//             },
+//             credentials: 'same-origin'
+//         }
+//     ).then(response => response.json())
+//         .then(data => {
+//             console.log(data.data);
+//             let dat = data.data;
+//             (dat).map(data => {
+//                 // if (data.language.name == language) {
+//                 return {
+//                     name: data.name,
+//                     id: data.id,
+//                     abbreviation: data.abbreviation,
+//                     description: data.description,
+//                     language: data.language.name,
+//                 };
+//             })
+//         }
+//     )    
+// }
 
 
 function sortVersionsByLanguage(bibleVersionList) {
