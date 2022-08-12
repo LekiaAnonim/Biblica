@@ -145,7 +145,9 @@ function showResult() {
     resultList.classList.add('display-passage');
     resultList.style.display = 'block';
     getBibleVersions().then((versions) => {
-        let versionss = versions.slice(1);
+        const sortedVersions = sortVersionsByLanguage(versions);
+        console.log(sortedVersions);
+        // let versionss = sortedVersions.slice(1);
         let vDiv = document.createElement('div');
         vDiv.classList.add('selectDiv');
         let select = document.createElement('select');
@@ -156,11 +158,19 @@ function showResult() {
         option1.text = `King James (Authorized) Version`;
         select.append(option1)
         try {
-            for (const version of versionss) {
-                let option = document.createElement('option');
-                option.value = version.id;
-                option.text = version.name;
-                select.appendChild(option)
+
+            for (let languageGroup in sortedVersions) {
+                const language = languageGroup;
+                let optiongroup = document.createElement('optgroup');
+                optiongroup.label = language;
+                select.appendChild(optiongroup);
+                const versionss = sortedVersions[languageGroup];
+                for (const version of versionss) {
+                    let option = document.createElement('option');
+                    option.value = version.id;
+                    option.text = version.name;
+                    optiongroup.appendChild(option)
+                }
             }
         } catch (err) {
             console.log(err.message)
