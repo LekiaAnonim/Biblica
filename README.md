@@ -1,37 +1,26 @@
 
 
-📙#BIBLICA
+# 📙BIBLICA
 
-📓##Description: 
-Biblica is a bible browser extension. Users can get the quote of a bible passage by selecting the bible passage. Biblica comes in different languages and bible versions.
+---
 
+![Prroduct Logo](/images/128.png)
 
+## 📓Description: 
+Biblica is a multi-lingua, multi-version Bible browser extension.  Biblica uses the [scripture.api.bible](https://scripture.api.bible/), a public api that host nearly 2500 Bible versions available across over 1500 languages.
 
-📗##Structure:
-bible.api : This is a free Bible API service that serve as the source for the biblica application.
-bibleObject: The bibleObject is a JavaScript library that makes API calls to bible.api. Users selects a bible passage (e.g. John 3:16) and the algorithm processes the selected text and sends it as a request to bible.api to get a response. The text is processed into 
-book (e.g John)
-chapter (e.g 3)
-verse (e.g 16)
-UI: The UI for the display of results will open a sub window in the browser. It will display the quoted bible passage, references, option for reading in other languages and versions.
+### How it works:
+Select or highlight a search word(e.g. ***God***) or Bible reference(e.g ***John 3: 16 or Gen 1:1***) you want to look up in the Bible.
 
-📘##Biblica Website:
-The website provides the description, user guide, and features of Biblica. And a call to action for first users to add the application as a browser extension.
-________________________________
+## 📗Structure:
+The application consist of two JavaScript files in the js folder.
+- bible-version.js
+- getResult.js
+The ***bible-version.js*** file contain the *getBibleVersion* and *getLanguage* method for returning the Bible Versions and languages, and a *sortVersionsByLanguage* method that takes as argument bibleVersionList.
+The ***getResult.js*** file is the heart of the application where API calls are made, consume and rendered. Explanatory comment will be added to block of codes, and variables to describe what they are use for.
 
-Bible Object/Class
-________________________________
-passageProcessor() // This method contains the algorithm for processing selected Bible passages.
-—---------------------------------------------------
-getLanguage(Default="user defined")
-—---------------------------------------------------
-getVersion(default="user defined")
-—--------------------------------------------------
-getBook()
-—---------------------------------------------------
-getChapter()
-—---------------------------------------------------
-getVerse()
-________________________________
+### Contribution:
+To contribute to this project check the GitHub repository <github.com/LekiaAnonim/Biblica>.
 
-N/B: The Bible should implement the getLanguage and getVersion methods as an interface.
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

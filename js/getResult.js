@@ -88,6 +88,7 @@ function showResult(e) {
         try {
             for (let languageGroup in sortedVersions) {
                 const language = languageGroup;
+                
                 let optiongroup = document.createElement('optgroup');
                 optiongroup.label = language;
                 select.appendChild(optiongroup);
@@ -171,7 +172,7 @@ function fetchData(searchText, bibleVersionID, offset) {
         }
     )
 }
-const logo = chrome.runtime.getURL("/biblica.png");
+const logo = chrome.runtime.getURL("/images/biblica.png");
 function headerHTML(searchText, data, vDiv) {
     let headDiv = document.createElement('div');
     headDiv.classList.add('head-div');

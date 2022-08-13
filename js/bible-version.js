@@ -11,9 +11,7 @@ function getLanguages() {
                 const language = data.map((data) => {
                     return (data.language.name)
                 })
-
                 resolve(language)
-
             }
         });
         xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
@@ -39,7 +37,6 @@ function getBibleVersions() {
                         language: data.language.name,
                     };
                 });
-
                 resolve(versions);
             }
         });
