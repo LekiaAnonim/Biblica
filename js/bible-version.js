@@ -1,3 +1,5 @@
+API_KEY = `e1d3a7bcbb9af8b1232dea1bdf4d9dcb`;
+
 function getLanguages() {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -28,7 +30,6 @@ function getBibleVersions() {
         xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
                 const { data } = JSON.parse(this.responseText);
-                console.log(data);
                 const versions = data.map((data) => {
                     return {
                         name: data.name,
