@@ -21,7 +21,7 @@ The ***bible-version.js*** file contain the *getBibleVersion* and *getLanguage* 
 The ***getResult.js*** file is the heart of the application where API calls are made, consume and rendered. Explanatory comment will be added to block of codes, and variables to describe what they are use for.
 
 ### Contribution:
-To contribute to this project check the GitHub repository < github.com/LekiaAnonim/Biblica >.
+To contribute to this project check the GitHub repository <https://github.com/LekiaAnonim/Biblica>.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
