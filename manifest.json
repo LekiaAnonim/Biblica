@@ -15,6 +15,12 @@
 "action":{
     "default_popup": "biblica.html"
 },
+"web_accessible_resources":[
+{
+    "matches": ["<all_urls>"],
+    "resources": ["biblica.png"]
+}
+],
 "permissions": [
 "unlimitedStorage",
 "notifications"
