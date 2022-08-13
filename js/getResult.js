@@ -112,7 +112,7 @@ function showResult(e) {
         }, false);
 
         function fetchResultBobdy() {
-            const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+            const searchText = selObj.toString().replace(/[.]/g,'') || sessionStorage.LocalToGlobalVar;
             const bibleVersionID = languageOption.value;
             fetchData(searchText, bibleVersionID, offset)
             .then(response=>response.json())
@@ -124,7 +124,7 @@ function showResult(e) {
         }
 
         function fetchResultHeadBobdy() {
-            const searchText = selObj.toString() || sessionStorage.LocalToGlobalVar;
+            const searchText = selObj.toString().replace(/[.]/g,'') || sessionStorage.LocalToGlobalVar;
             const bibleVersionID = languageOption.value;
             fetchData(searchText, bibleVersionID, offset)
             .then(response=>response.json())
@@ -171,13 +171,14 @@ function fetchData(searchText, bibleVersionID, offset) {
         }
     )
 }
-
+const logo = `../biblica.png`;
 function headerHTML(searchText, data, vDiv) {
     let headDiv = document.createElement('div');
     headDiv.classList.add('head-div');
     headHTML = ``;
     headHTML += `<div class="resulthead">`
     headHTML += `<div>
+                        <img class="logo" src=${logo}>
                         <div class="searchtext">${searchText}</div>
                         <div title="Close" class="cancel">✖</div>
                         <div class="pagenav-copy-div">
