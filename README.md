@@ -16,6 +16,7 @@ Select or highlight a search word(e.g. ***God***) or Bible reference(e.g ***John
 The application consist of two JavaScript files in the js folder.
 - bible-version.js
 - getResult.js
+
 The ***bible-version.js*** file contain the *getBibleVersion* and *getLanguage* method for returning the Bible Versions and languages, and a *sortVersionsByLanguage* method that takes as argument bibleVersionList.
 The ***getResult.js*** file is the heart of the application where API calls are made, consume and rendered. Explanatory comment will be added to block of codes, and variables to describe what they are use for.
 
