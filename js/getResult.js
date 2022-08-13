@@ -11,22 +11,6 @@ Array.from(elememtSel).forEach(function (elem) {
 }
 })
 
-function copyResult() {
-    textToCopy = document.querySelectorAll('.resultbody');
-    allText = [];
-    Array.from(textToCopy).forEach(function(text) {
-        allText.push(text.innerText);
-        navigator.clipboard.writeText(allText);
-    })
-    var tooltip = document.getElementById("myTooltip");
-    tooltip.innerHTML = "Copied";
-}
-
-function outFunc() {
-    var tooltip = document.getElementById("myTooltip");
-    tooltip.innerHTML = "Copy to clipboard";
-}
-
 function renderHTML(data, offset) {
     let resultDiv = document.createElement('div');
     resultDiv.classList.add('resultdiv');
@@ -124,6 +108,7 @@ function showResult(e) {
         languageOption.addEventListener('change', function () {
             resultList.removeChild(resultList.children[1]);
             fetchResultBobdy();
+            offset = 0;
         }, false);
 
         function fetchResultBobdy() {
@@ -202,7 +187,7 @@ function headerHTML(searchText, data, vDiv) {
                                 <button class="next pagenav">Next >></button>
                             </div>
                             <div class="tooltip">
-                                <button class="copybtn" onclick="copyResult()" onmouseout="outFunc()">
+                                <button class="copybtn">
                                 <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
                                 <i>&#x1F4DD;</i>
                                 </button>
@@ -212,6 +197,24 @@ function headerHTML(searchText, data, vDiv) {
     headHTML += `</div>`;
     headDiv.innerHTML = headHTML;
     vDiv.append(headDiv);
+    const copybutton = document.querySelector('.copybtn');
+    copybutton.addEventListener('click', copyResult);
+    copybutton.addEventListener('mouseout', outFunc);
+    function copyResult() {
+        textToCopy = document.querySelectorAll('.resultbody');
+        allText = [];
+        Array.from(textToCopy).forEach(function(text) {
+            allText.push(text.innerText);
+            navigator.clipboard.writeText(allText);
+        })
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copied";
+    }
+
+    function outFunc() {
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copy to clipboard";
+    }
 }
 
 function removeresultList() {
