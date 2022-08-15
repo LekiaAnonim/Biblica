@@ -22,7 +22,7 @@ function renderHTML(data, offset) {
                 resultHTML += `<div class="cont">`;
                 
                 resultHTML += `<div class="resultbody-cont">`;
-                resultHTML += `<div class="page"><p>Page: ${offset+1}</p></div>`;
+                resultHTML += `<div class="page"><p class="page-p">Page: ${offset+1}</p></div>`;
                 for (const passage of data.passages) {
                     resultHTML += ` <div class="resultbody">
                                         <h5 class="body-heading">${passage.reference}</h5>
@@ -41,7 +41,7 @@ function renderHTML(data, offset) {
             } else {
                 resultHTML += `<div class="cont">`;
                 resultHTML += `<div class="resultbody-cont">`;
-                resultHTML += `<div class="page"><p>Page: ${offset+1}</p></div>`;
+                resultHTML += `<div class="page"><p class="page-p">Page: ${offset+1}</p></div>`;
                 for (const verse of data.verses) {
                     resultHTML += `<div class="resultbody">
                             <h5 class="verse-ref">${verse.reference}</h5>
