@@ -172,7 +172,8 @@ function fetchData(searchText, bibleVersionID, offset) {
         }
     )
 }
-const logo = chrome.runtime.getURL("/images/biblica.png");
+// const logo = chrome.runtime.getURL("/images/biblica.png");
+const logo = "/images/biblica.png";
 function headerHTML(searchText, data, vDiv) {
     let headDiv = document.createElement('div');
     headDiv.classList.add('head-div');
