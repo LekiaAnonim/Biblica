@@ -41,7 +41,7 @@ function renderHTML(data, offset) {
             } else {
                 resultHTML += `<div class="cont">`;
                 resultHTML += `<div class="resultbody-cont">`;
-                resultHTML += `<div class="page"><p class="page-p">Page: ${offset+1}</p></div>`;
+                resultHTML += `<div class="page"><p class="biblica-p page-p">Page: ${offset+1}</p></div>`;
                 for (const verse of data.verses) {
                     resultHTML += `<div class="resultbody">
                             <h5 class="verse-ref">${verse.reference}</h5>
