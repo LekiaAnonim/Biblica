@@ -1,0 +1,28 @@
+{
+"manifest_version": 3,
+"name": "Biblica",
+"description": "Biblica is a bible browser extension. Users can get the quote of a Bible passage or a key word by selecting or highlighting on the Bible passage or the key word. Biblica comes in different languages and bible versions.",
+"version": "1.1",
+"icons": {
+"128": "images/128.png"
+},
+"content_scripts":[{
+    "matches": ["<all_urls>"],
+    "all_frames": true,
+    "css": ["css/bible-style.css"],
+    "js": ["js/bible-version.js", "js/getResult.js", "js/fumsv2.min.js", "js/my_key.js"]
+}],
+"action":{
+    "default_popup": "biblica.html"
+},
+"web_accessible_resources":[
+{
+    "matches": ["<all_urls>"],
+    "resources": ["images/biblica.png"]
+}
+],
+"permissions": [
+"unlimitedStorage",
+"notifications"
+]
+}

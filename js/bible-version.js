@@ -1,3 +1,5 @@
+API_KEY = `e1d3a7bcbb9af8b1232dea1bdf4d9dcb`;
+
 function getLanguages() {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -9,9 +11,7 @@ function getLanguages() {
                 const language = data.map((data) => {
                     return (data.language.name)
                 })
-
                 resolve(language)
-
             }
         });
         xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
@@ -28,9 +28,7 @@ function getBibleVersions() {
         xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
                 const { data } = JSON.parse(this.responseText);
-
                 const versions = data.map((data) => {
-                    // if (data.language.name == language) {
                     return {
                         name: data.name,
                         id: data.id,
@@ -38,10 +36,7 @@ function getBibleVersions() {
                         description: data.description,
                         language: data.language.name,
                     };
-                    // } else return null
-
                 });
-
                 resolve(versions);
             }
         });
@@ -52,6 +47,31 @@ function getBibleVersions() {
     });
 }
 
+// function getBibleVersions() {
+//     fetch(`https://api.scripture.api.bible/v1/bibles`,
+//         {
+//             headers: {
+//                 "api-key": API_KEY
+//             },
+//             credentials: 'same-origin'
+//         }
+//     ).then(response => response.json())
+//         .then(data => {
+//             console.log(data.data);
+//             let dat = data.data;
+//             (dat).map(data => {
+//                 // if (data.language.name == language) {
+//                 return {
+//                     name: data.name,
+//                     id: data.id,
+//                     abbreviation: data.abbreviation,
+//                     description: data.description,
+//                     language: data.language.name,
+//                 };
+//             })
+//         }
+//     )    
+// }
 
 
 function sortVersionsByLanguage(bibleVersionList) {
