@@ -13,7 +13,7 @@
     "js": ["js/bible-version.js", "js/getResult.js", "js/fumsv2.min.js", "js/my_key.js"]
 }],
 "action":{
-    "default_popup": "biblica.html"
+    "default_popup": "index.html"
 },
 "web_accessible_resources":[
 {
